@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+:root {
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: 'Poppins', 'Rubik', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --uncodemy-orange: #ff5421;
+}
+
+@layer base {
+  *, ::after, ::before {
+    box-sizing: border-box;
+  }
+  ::selection {
+    background-color: #ff5421 !important;
+    color: #ffffff !important;
+  }
+  ::-moz-selection {
+    background-color: #ff5421 !important;
+    color: #ffffff !important;
+  }
+  body {
+    font-family: 'Poppins', 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-align: left;
+    display: block;
+  }
+  #main-nav {
+    z-index: 1000;
+    background-color: #fff;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #000;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ========================================================
+   STRICT ATS RESUME PRINT STYLING
+   Ensures ONLY the resume document prints, with 0 extraneous UI.
+   ======================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Completely suppress all website navigation, hero banner, site footer, modals, buttons, and confetti */
+  .no-print,
+  #main-nav,
+  nav,
+  footer,
+  canvas,
+  .no-print * {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Reset all outer app containers */
+  #root,
+  main,
+  .min-h-screen,
+  .bg-slate-50,
+  .max-w-7xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .resume-preview-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .resume-canvas-outer {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Strict resume printable paper isolation - RESUME POORA AYEGA */
+  #resume-print-area {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    overflow: visible !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Ensure resume inner container does not constrain height or clip */
+  #resume-print-area > div {
+    min-height: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  /* All resume contents, header, aside, sections, and items must be visible and properly rendered */
+  #resume-print-area,
+  #resume-print-area * {
+    visibility: visible !important;
+  }
+
+  #resume-print-area header {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    width: 100% !important;
+    margin-bottom: 0.75rem !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  #resume-print-area aside {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #resume-print-area section {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Prevent awkward page break cutting in the middle of an individual item */
+  #resume-print-area li,
+  #resume-print-area article,
+  #resume-print-area .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
