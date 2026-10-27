@@ -14,7 +14,7 @@ export default function ExperienceForm({ experiences, onChange }) {
       startDate: "",
       endDate: "",
       current: false,
-      description: "• Spearheaded ...\n• Developed ...\n• Improved ..."
+      description: ""
     };
     onChange([...experiences, newExp]);
   };

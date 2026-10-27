@@ -1,82 +1,53 @@
 export const initialResumeData = {
   personalInfo: {
-    fullName: "Rahul Sharma",
-    jobTitle: "Full Stack Java & React Developer",
-    email: "rahul.sharma@example.com",
-    phone: "+91 98765 43210",
-    location: "Bengaluru, Karnataka, India",
-    linkedin: "linkedin.com/in/rahulsharma-dev",
-    github: "github.com/rahul-codes",
-    portfolio: "rahulsharma.dev",
-    photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400",
-    summary: "Results-driven Software Engineer with 2+ years of experience in building scalable REST APIs using Spring Boot and high-performance interactive interfaces with React.js. Passionate about microservices, clean code, and ATS-optimized engineering standards."
+    fullName: "",
+    jobTitle: "",
+    email: "",
+    phone: "",
+    location: "",
+    linkedin: "",
+    github: "",
+    portfolio: "",
+    photoUrl: "",
+    summary: ""
   },
   experience: [
     {
       id: "exp-1",
-      title: "Software Engineer",
-      company: "InnovateTech Solutions",
-      location: "Bengaluru, India",
-      startDate: "2023 - Present",
-      current: true,
-      description: "• Architected high-throughput REST APIs using Spring Boot and PostgreSQL, reducing query latency by 35%.\n• Developed reusable responsive UI components using React, Tailwind CSS, and Redux Toolkit.\n• Implemented JWT token-based authentication and Spring Security for 100,000+ active users.\n• Automated CI/CD deployment pipelines using Docker, GitHub Actions, and AWS EC2."
-    },
-    {
-      id: "exp-2",
-      title: "Junior Java Developer Intern",
-      company: "CloudVibe Systems",
-      location: "Pune, India",
-      startDate: "2022",
-      endDate: "2023",
+      title: "",
+      company: "",
+      location: "",
+      startDate: "",
+      endDate: "",
       current: false,
-      description: "• Built microservices endpoints with Spring MVC, Hibernate ORM, and MySQL database.\n• Integrated third-party payment gateway webhooks with 99.9% transaction reliability.\n• Collaborated in Agile Scrum sprints, resolving 40+ critical bug tickets before release."
+      description: ""
     }
   ],
   education: [
     {
       id: "edu-1",
-      degree: "B.Tech in Computer Science & Engineering",
-      institution: "National Institute of Technology (NIT)",
-      location: "India",
-      year: "2019 - 2023",
-      grade: "8.8 CGPA"
+      degree: "",
+      institution: "",
+      location: "",
+      year: "",
+      grade: ""
     }
   ],
   skills: {
-    technical: ["Java", "Spring Boot", "React.js", "JavaScript (ES6+)", "TypeScript", "SQL / PostgreSQL", "Docker", "RESTful APIs", "Microservices", "Git & GitHub"],
-    softSkills: ["Problem Solving", "Agile Collaboration", "Team Leadership", "System Design"],
-    tools: ["Postman", "IntelliJ IDEA", "VS Code", "Maven", "Figma", "AWS"]
+    technical: [],
+    softSkills: [],
+    tools: []
   },
   projects: [
     {
       id: "proj-1",
-      name: "Enterprise Resume & Career Platform",
-      techStack: "React, Spring Boot, MySQL, Tailwind CSS",
-      link: "https://github.com/rahul-codes/resume-craft",
-      description: "Engineered a full-stack career platform supporting 10,000+ users. Features real-time ATS scoring, PDF generation, and Razorpay subscription integration."
-    },
-    {
-      id: "proj-2",
-      name: "Real-time Chat & Collab App",
-      techStack: "React, Spring WebSockets, Redis, Docker",
-      link: "https://github.com/rahul-codes/chat-stream",
-      description: "Developed instant messaging web application with sub-50ms latency using WebSocket STOMP protocol and Redis message pub/sub."
+      name: "",
+      techStack: "",
+      link: "",
+      description: ""
     }
   ],
-  certifications: [
-    {
-      id: "cert-1",
-      name: "Oracle Certified Professional: Java SE 11 Developer",
-      issuer: "Oracle University",
-      year: "2023"
-    },
-    {
-      id: "cert-2",
-      name: "AWS Certified Cloud Practitioner",
-      issuer: "Amazon Web Services",
-      year: "2024"
-    }
-  ]
+  certifications: []
 };
 
 export const sampleProfiles = {

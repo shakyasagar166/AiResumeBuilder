@@ -8,7 +8,7 @@ export default function ProjectsForm({ projects, onChange }) {
       name: "",
       techStack: "",
       link: "",
-      description: "Engineered ..."
+      description: ""
     };
     onChange([...projects, newProj]);
   };

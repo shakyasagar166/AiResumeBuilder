@@ -13,7 +13,7 @@ import Toast from "./components/Toast";
 import { initialResumeData, sampleProfiles } from "./data/sampleData";
 import { TEMPLATES, ACCENT_COLORS, FONTS } from "./data/templates";
 import { calculateAtsScore } from "./utils/atsScorer";
-import { FileText, ShieldCheck, ArrowRight, ArrowLeft, Sparkles, CheckCircle2, Target, Bot } from "lucide-react";
+import { FileText, ShieldCheck, ArrowRight, ArrowLeft, Sparkles, CheckCircle2, Target, Bot, RotateCcw } from "lucide-react";
 import confetti from "canvas-confetti";
 import {
   getFreeExportsLeft,
@@ -29,7 +29,22 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(() => getCurrentUser());
   const [resumeData, setResumeData] = useState(() => {
     const saved = localStorage.getItem("resumecraft_data");
-    return saved ? JSON.parse(saved) : initialResumeData;
+    if (!saved) return initialResumeData;
+    try {
+      const parsed = JSON.parse(saved);
+      // If previous user had old pre-filled sample ("Rahul Sharma" or "Pooja Verma"), clear it!
+      if (
+        parsed?.personalInfo?.fullName === "Rahul Sharma" ||
+        parsed?.personalInfo?.email === "rahul.sharma@example.com" ||
+        parsed?.personalInfo?.fullName === "Pooja Verma"
+      ) {
+        localStorage.removeItem("resumecraft_data");
+        return initialResumeData;
+      }
+      return parsed;
+    } catch {
+      return initialResumeData;
+    }
   });
 
   const [selectedTemplate, setSelectedTemplate] = useState("modern-tech");
@@ -288,6 +303,16 @@ export default function App() {
             >
               <Target className="w-4 h-4 text-[#ff5421]" />
               <span>🎯 Job Matcher %</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleResetData}
+              className="min-h-[44px] px-3 sm:px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-rose-600 bg-slate-100 hover:bg-rose-50 border border-slate-200 hover:border-rose-300 transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
+              title="Clear all fields and start with a fresh blank resume"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Clear Form</span>
             </button>
 
             <button
