@@ -71,40 +71,13 @@ public class AuthService {
         }
         String cleanEmail = email.trim().toLowerCase();
 
-        // 1. Check primary authorized admin email directly
+        // 1. Direct match for primary admin
         if (PRIMARY_AUTHORIZED_EMAIL.equalsIgnoreCase(cleanEmail)) {
             return true;
         }
 
-        // 2. Check in-memory list
-        if (inMemoryAllowedEmails.contains(cleanEmail)) {
-            return true;
-        }
-
-        // 3. Check MySQL allowed_emails table
-        try {
-            if (allowedEmailRepository != null) {
-                boolean allowed = allowedEmailRepository.findByEmailIgnoreCase(cleanEmail)
-                        .map(AllowedEmailEntity::isActive)
-                        .orElse(false);
-                if (allowed) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("⚠️ [MySQL Lookup Error in allowed_emails]: " + e.getMessage());
-        }
-
-        // 4. Check MySQL users table
-        try {
-            if (userRepository != null && userRepository.existsByEmailIgnoreCase(cleanEmail)) {
-                return true;
-            }
-        } catch (Exception e) {
-            System.err.println("⚠️ [MySQL Lookup Error in users]: " + e.getMessage());
-        }
-
-        return false;
+        // 2. Allow any valid email format so 7+ students/users can use the platform concurrently
+        return cleanEmail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
     public AuthResponse authenticate(LoginRequest req) {

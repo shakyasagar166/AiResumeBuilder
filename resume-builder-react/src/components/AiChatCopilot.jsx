@@ -61,9 +61,11 @@ export default function AiChatCopilot({
   const isVerifiedStudent = Boolean(
     currentUser && (
       currentUser.isUncodemyStudent === true ||
+      currentUser.isPro === true ||
       currentUser.role === "SUPER_ADMIN" ||
       currentUser.role === "ADMIN" ||
       currentUser.role === "STUDENT" ||
+      currentUser.role === "STUDENT_PRO" ||
       currentUser.email?.toLowerCase() === "shakaysagar166@gmail.com"
     )
   );

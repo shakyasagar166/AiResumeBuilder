@@ -151,9 +151,11 @@ export function isUncodemyStudent(user) {
   if (!user || !user.email) return false;
   return (
     user.isUncodemyStudent === true ||
+    user.isPro === true ||
     user.role === "SUPER_ADMIN" ||
     user.role === "ADMIN" ||
     user.role === "STUDENT" ||
+    user.role === "STUDENT_PRO" ||
     user.email.toLowerCase() === PRIMARY_ALLOWED_EMAIL.toLowerCase()
   );
 }

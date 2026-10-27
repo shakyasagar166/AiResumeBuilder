@@ -71,9 +71,11 @@ export function getIsProUser() {
       if (
         user &&
         (user.isUncodemyStudent === true ||
+          user.isPro === true ||
           user.role === "SUPER_ADMIN" ||
           user.role === "ADMIN" ||
           user.role === "STUDENT" ||
+          user.role === "STUDENT_PRO" ||
           user.email?.toLowerCase() === "shakaysagar166@gmail.com")
       ) {
         return true;
