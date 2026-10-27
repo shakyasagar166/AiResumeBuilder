@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { calculateAtsScore, calculateAtsScoreFromText } from "../utils/atsScorer";
+import { extractTextFromDocument } from "../utils/documentTextExtractor";
 
 const SAMPLE_FRESHER_RESUME = `Rahul Sharma
 Software Engineer Fresher | Java & Full Stack Developer
@@ -162,75 +163,24 @@ export default function AtsCheckerModal({
     }, 350);
   };
 
-  // Handle File Upload
+  // Handle File Upload with Universal High-Precision PDF.js & Mammoth.js Extractor
   const handleFileProcess = async (file) => {
     if (!file) return;
     setFileName(file.name);
-    setUploadNotice("");
+    setUploadNotice("⏳ Extracting text with high-precision PDF.js engine...");
 
-    const ext = file.name.split(".").pop().toLowerCase();
-
-    if (["txt", "md", "json", "rtf", "csv", "log"].includes(ext)) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target.result || "";
+    try {
+      const text = await extractTextFromDocument(file);
+      if (text && text.trim().length > 20) {
         setResumeText(text);
-        setUploadNotice(`✅ Loaded ${file.name} successfully! Click "Calculate ATS Score" below.`);
-      };
-      reader.readAsText(file);
-      return;
-    }
-
-    if (ext === "pdf") {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const binary = e.target.result || "";
-          const textMatches = binary.match(/\(([^()]{2,})\)\s*(?:Tj|'|")/g) || [];
-          let extracted = "";
-          if (textMatches.length > 5) {
-            extracted = textMatches
-              .map((m) => m.replace(/^\(/, "").replace(/\)\s*(?:Tj|'|")$/, "").replace(/\\([()\\])/g, "$1"))
-              .join(" ");
-          } else {
-            const printable = binary.replace(/[^\x20-\x7E\r\n\t]/g, " ");
-            const wordsList = printable.split(/\s+/).filter((w) => w.length > 2 && /^[a-zA-Z0-9.,@#+_%/-]+$/.test(w));
-            if (wordsList.length > 30) {
-              extracted = wordsList.join(" ");
-            }
-          }
-
-          if (extracted && extracted.length > 50) {
-            setResumeText(extracted);
-            setUploadNotice(`✅ Extracted text from ${file.name}. Review below and calculate your score!`);
-          } else {
-            setUploadNotice(`ℹ️ ${file.name} attached. For scanned or image PDFs, copy & paste text directly into the box for 100% precision.`);
-          }
-        } catch {
-          setUploadNotice(`ℹ️ File loaded. Please paste resume text below for complete ATS verification.`);
-        }
-      };
-      if (reader.readAsBinaryString) {
-        reader.readAsBinaryString(file);
+        setUploadNotice(`✅ Successfully extracted text from ${file.name} (${text.split(/\s+/).length} words)! Click "Calculate ATS Score" below.`);
       } else {
-        reader.readAsText(file);
+        setUploadNotice(`ℹ️ File loaded. If your resume is an image scan, please copy & paste your resume text directly.`);
       }
-      return;
+    } catch (err) {
+      console.warn("Document text extraction error:", err);
+      setUploadNotice(`ℹ️ ${file.name} attached. Please paste resume text directly if it is a scanned image.`);
     }
-
-    // Fallback for docx or other formats
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target.result || "";
-      const printable = typeof content === "string" ? content.replace(/[^\x20-\x7E\r\n\t]/g, " ") : "";
-      if (printable.length > 50) {
-        setResumeText(printable);
-        setUploadNotice(`✅ Extracted content from ${file.name}. Review below!`);
-      } else {
-        setUploadNotice(`ℹ️ Document attached. You can paste your resume text directly into the editor below.`);
-      }
-    };
-    reader.readAsText(file);
   };
 
   const handleDrop = (e) => {

@@ -25,6 +25,7 @@ import {
   convertResumeDataToText,
   PRESET_JOB_PROFILES
 } from "../utils/profileMatcher";
+import { extractTextFromDocument } from "../utils/documentTextExtractor";
 
 export default function ProfileMatcherModal({
   isOpen,
@@ -64,65 +65,45 @@ export default function ProfileMatcherModal({
     setTimeout(() => setNotice(""), 3500);
   };
 
-  // 3. File upload handler for Resume
-  const handleResumeFileUpload = (file) => {
+  // 3. File upload handler for Resume with Universal PDF.js / Mammoth.js
+  const handleResumeFileUpload = async (file) => {
     if (!file) return;
     setResumeFileName(file.name);
-    const fileNameLower = file.name.toLowerCase();
+    setNotice(`⏳ Extracting text from "${file.name}" with PDF.js engine...`);
 
-    if (fileNameLower.endsWith(".txt")) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setResumeText(e.target.result || "");
-      };
-      reader.readAsText(file);
-    } else {
-      // PDF or binary fallback extractor
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const binary = e.target.result || "";
-        const textMatches = binary.match(/\(([^()]{2,})\)\s*(?:Tj|'|")/g) || [];
-        if (textMatches.length > 5) {
-          const extracted = textMatches
-            .map((m) => m.replace(/^[('"]+|[)'"]+$/g, "").trim())
-            .filter((t) => t.length > 1)
-            .join(" ");
-          setResumeText(extracted);
-        } else {
-          // Plain ASCII fallback extraction
-          const asciiClean = binary
-            .replace(/[^\x20-\x7E\n\r\t]/g, " ")
-            .replace(/\s{2,}/g, " ")
-            .trim();
-          setResumeText(asciiClean.length > 50 ? asciiClean : "Could not parse formatted PDF. Please copy and paste text directly.");
-        }
-      };
-      reader.readAsBinaryString(file);
+    try {
+      const text = await extractTextFromDocument(file);
+      if (text && text.trim().length > 20) {
+        setResumeText(text);
+        setNotice(`✓ Extracted ${text.split(/\s+/).length} words from "${file.name}"!`);
+        setTimeout(() => setNotice(""), 3500);
+      } else {
+        setNotice(`⚠️ ${file.name} attached. If it is a scanned image, please paste text directly.`);
+      }
+    } catch (err) {
+      console.warn("Document text extraction error:", err);
+      setNotice(`⚠️ Could not parse text from ${file.name}. Please copy and paste your resume text directly.`);
     }
   };
 
   // 4. File upload handler for Job Description
-  const handleJdFileUpload = (file) => {
+  const handleJdFileUpload = async (file) => {
     if (!file) return;
-    const fileNameLower = file.name.toLowerCase();
+    setNotice(`⏳ Extracting text from Job Description "${file.name}"...`);
 
-    if (fileNameLower.endsWith(".txt")) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setJobDescription(e.target.result || "");
-      };
-      reader.readAsText(file);
-    } else {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const binary = e.target.result || "";
-        const asciiClean = binary
-          .replace(/[^\x20-\x7E\n\r\t]/g, " ")
-          .replace(/\s{2,}/g, " ")
-          .trim();
-        setJobDescription(asciiClean);
-      };
-      reader.readAsBinaryString(file);
+    try {
+      const text = await extractTextFromDocument(file);
+      if (text && text.trim().length > 20) {
+        setJobDescription(text);
+        setSelectedPresetId("");
+        setNotice(`✓ Extracted ${text.split(/\s+/).length} words from "${file.name}"!`);
+        setTimeout(() => setNotice(""), 3500);
+      } else {
+        setNotice(`⚠️ Could not parse text. Please paste the job description directly.`);
+      }
+    } catch (err) {
+      console.warn("JD text extraction error:", err);
+      setNotice(`⚠️ Could not parse text from ${file.name}. Please paste the job description directly.`);
     }
   };
 
