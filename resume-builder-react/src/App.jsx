@@ -5,6 +5,7 @@ import EditorContainer from "./components/EditorForm/EditorContainer";
 import PreviewSection from "./components/PreviewSection";
 import AtsScoreMeter from "./components/AtsScoreMeter";
 import AtsCheckerModal from "./components/AtsCheckerModal";
+import ProfileMatcherModal from "./components/ProfileMatcherModal";
 import PricingModal from "./components/PricingModal";
 import AiChatCopilot from "./components/AiChatCopilot";
 import EmailResumeModal from "./components/EmailResumeModal";
@@ -14,7 +15,7 @@ import Footer from "./components/Footer";
 import { initialResumeData, sampleProfiles } from "./data/sampleData";
 import { TEMPLATES, ACCENT_COLORS, FONTS } from "./data/templates";
 import { calculateAtsScore } from "./utils/atsScorer";
-import { FileText, ShieldCheck, ArrowRight, ArrowLeft, Sparkles, CheckCircle2 } from "lucide-react";
+import { FileText, ShieldCheck, ArrowRight, ArrowLeft, Sparkles, CheckCircle2, Target } from "lucide-react";
 import confetti from "canvas-confetti";
 import {
   getFreeExportsLeft,
@@ -40,6 +41,7 @@ export default function App() {
   // View state: "form" (Step 1: Enter details) vs "preview" (Step 2: View & Download ATS Resume)
   const [activeView, setActiveView] = useState("form");
   const [isAtsCheckerOpen, setIsAtsCheckerOpen] = useState(false);
+  const [isProfileMatcherOpen, setIsProfileMatcherOpen] = useState(false);
 
   const [freeExportsLeft, setFreeExportsLeftState] = useState(getFreeExportsLeft);
   const [aiGenerationsLeft, setAiGenerationsLeftState] = useState(getAiGenerationsLeft);
@@ -161,6 +163,24 @@ export default function App() {
     }, 400);
   };
 
+  const handleAddSkillToBuilder = (newSkill) => {
+    if (!newSkill) return;
+    setResumeData((prev) => {
+      const existing = prev.skills || [];
+      if (existing.some((s) => s.toLowerCase() === newSkill.toLowerCase())) {
+        return prev;
+      }
+      return {
+        ...prev,
+        skills: [...existing, newSkill]
+      };
+    });
+    setToast({
+      type: "success",
+      message: `Added "${newSkill}" to your Resume Skills!`
+    });
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
       {/* Navigation */}
@@ -174,6 +194,7 @@ export default function App() {
         onOpenAiChat={() => setIsAiChatOpen(true)}
         aiGenerationsLeft={aiGenerationsLeft}
         onOpenAtsChecker={() => setIsAtsCheckerOpen(true)}
+        onOpenProfileMatcher={() => setIsProfileMatcherOpen(true)}
         atsScore={atsScore}
         activeView={activeView}
         setActiveView={setActiveView}
@@ -190,6 +211,7 @@ export default function App() {
             onLoadFresherProfile={() => handleLoadProfile(sampleProfiles.fresher)}
             onOpenAiChat={() => setIsAiChatOpen(true)}
             onOpenAtsChecker={() => setIsAtsCheckerOpen(true)}
+            onOpenProfileMatcher={() => setIsProfileMatcherOpen(true)}
             currentUser={currentUser}
             onOpenLoginModal={() => setIsLoginModalOpen(true)}
           />
@@ -251,10 +273,20 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsAtsCheckerOpen(true)}
-              className="col-span-2 sm:col-span-1 min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition cursor-pointer flex items-center justify-center gap-1.5"
+              className="min-h-[44px] px-3 sm:px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition cursor-pointer flex items-center justify-center gap-1.5"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>ATS Score: {atsScore}/100</span>
+              <span>ATS Score: {atsScore}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsProfileMatcherOpen(true)}
+              className="col-span-2 sm:col-span-1 min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-black text-[#ff5421] bg-orange-50 hover:bg-orange-100 border border-orange-300 transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
+              title="Compare your Resume against any Job Description"
+            >
+              <Target className="w-4 h-4 text-[#ff5421]" />
+              <span>🎯 Job Matcher %</span>
             </button>
           </div>
         </div>
@@ -374,6 +406,15 @@ export default function App() {
         onOpenPreview={() => setActiveView("preview")}
         onOpenAiChat={() => setIsAiChatOpen(true)}
         onApplyResume={handleApplyResumeFromAi}
+      />
+
+      {/* AI Resume & Job Profile Matcher Modal (Side-by-Side Match %) */}
+      <ProfileMatcherModal
+        isOpen={isProfileMatcherOpen}
+        onClose={() => setIsProfileMatcherOpen(false)}
+        resumeData={resumeData}
+        onAddSkillToBuilder={handleAddSkillToBuilder}
+        onOpenAiChat={() => setIsAiChatOpen(true)}
       />
 
       {/* AI Resume Copilot Assistant (Free for Uncodemy students in MongoDB, Paid for external users) */}

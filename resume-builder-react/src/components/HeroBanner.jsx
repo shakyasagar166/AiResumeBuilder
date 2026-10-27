@@ -1,7 +1,7 @@
 import React from "react";
-import { Sparkles, GraduationCap, CheckCircle2, Users, ArrowRight, ShieldCheck, Zap, Bot, Star } from "lucide-react";
+import { Sparkles, GraduationCap, CheckCircle2, Users, ArrowRight, ShieldCheck, Zap, Bot, Star, Target } from "lucide-react";
 
-export default function HeroBanner({ onOpenPricing, onLoadFresherProfile, onOpenAiChat, onOpenAtsChecker, currentUser, onOpenLoginModal }) {
+export default function HeroBanner({ onOpenPricing, onLoadFresherProfile, onOpenAiChat, onOpenAtsChecker, onOpenProfileMatcher, currentUser, onOpenLoginModal }) {
   return (
     <div className="no-print relative overflow-hidden bg-gradient-to-b from-orange-50/70 via-white to-neutral-50 border-b border-neutral-200 px-4 py-8 sm:py-10">
       {/* Background soft ambient accents in Uncodemy Orange */}
@@ -58,8 +58,20 @@ export default function HeroBanner({ onOpenPricing, onLoadFresherProfile, onOpen
                 className="w-full sm:w-auto min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 shadow-sm transition cursor-pointer transform active:scale-95"
               >
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>🎯 Free ATS Score (Upload/Paste)</span>
+                <span>🎯 Free ATS Score</span>
                 <span className="text-[10px] bg-emerald-600 text-white font-black px-1.5 py-0.5 rounded-full">FREE</span>
+              </button>
+            )}
+
+            {onOpenProfileMatcher && (
+              <button
+                type="button"
+                onClick={onOpenProfileMatcher}
+                className="w-full sm:w-auto min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-[#ff5421] bg-orange-50 hover:bg-orange-100 border border-orange-300 shadow-sm transition cursor-pointer transform active:scale-95"
+              >
+                <Target className="w-4 h-4 text-[#ff5421]" />
+                <span>🎯 Job Profile Matcher</span>
+                <span className="text-[10px] bg-[#ff5421] text-white font-black px-1.5 py-0.5 rounded-full">NEW</span>
               </button>
             )}
 

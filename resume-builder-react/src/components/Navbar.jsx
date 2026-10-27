@@ -14,7 +14,8 @@ import {
   User,
   Menu,
   X,
-  ArrowLeft
+  ArrowLeft,
+  Target
 } from "lucide-react";
 import { sampleProfiles } from "../data/sampleData";
 
@@ -28,6 +29,7 @@ export default function Navbar({
   onOpenAiChat,
   aiGenerationsLeft,
   onOpenAtsChecker,
+  onOpenProfileMatcher,
   atsScore = 95,
   activeView,
   setActiveView,
@@ -354,6 +356,20 @@ export default function Navbar({
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>🎯 Free ATS Score</span>
             </button>
+
+            {/* AI Resume & Job Profile Matcher */}
+            {onOpenProfileMatcher && (
+              <button
+                type="button"
+                onClick={onOpenProfileMatcher}
+                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs transition cursor-pointer hidden md:flex items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95"
+                title="Compare your Resume against any Job Profile"
+              >
+                <Target className="w-3.5 h-3.5 text-white" />
+                <span>🎯 Profile Matcher %</span>
+                <span className="text-[9px] bg-white text-[#ff5421] px-1.5 py-0.2 rounded-full font-black">NEW</span>
+              </button>
+            )}
 
             {/* Dedicated Back to Form button in desktop navbar when in preview */}
             {activeView === "preview" && (
@@ -783,6 +799,18 @@ export default function Navbar({
 
             {/* Right side Student Quick Actions */}
             <div className="hidden lg:flex items-center gap-2 shrink-0">
+              {onOpenProfileMatcher && (
+                <button
+                  type="button"
+                  onClick={onOpenProfileMatcher}
+                  className="px-3 py-1 rounded-full bg-[#ff5421] text-white hover:bg-orange-600 font-black text-[11px] shadow-xs cursor-pointer flex items-center gap-1 transition"
+                  title="Compare Resume with Target Job"
+                >
+                  <Target className="w-3.5 h-3.5 text-white" />
+                  <span>Job Matcher %</span>
+                </button>
+              )}
+
               <button
                 type="button"
                 onClick={onOpenAtsChecker}
