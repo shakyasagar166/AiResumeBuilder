@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./components/Navbar";
 import HeroBanner from "./components/HeroBanner";
 import EditorContainer from "./components/EditorForm/EditorContainer";
 import PreviewSection from "./components/PreviewSection";
@@ -11,11 +10,10 @@ import AiChatCopilot from "./components/AiChatCopilot";
 import EmailResumeModal from "./components/EmailResumeModal";
 import UncodemyLoginModal from "./components/Auth/UncodemyLoginModal";
 import Toast from "./components/Toast";
-import Footer from "./components/Footer";
 import { initialResumeData, sampleProfiles } from "./data/sampleData";
 import { TEMPLATES, ACCENT_COLORS, FONTS } from "./data/templates";
 import { calculateAtsScore } from "./utils/atsScorer";
-import { FileText, ShieldCheck, ArrowRight, ArrowLeft, Sparkles, CheckCircle2, Target } from "lucide-react";
+import { FileText, ShieldCheck, ArrowRight, ArrowLeft, Sparkles, CheckCircle2, Target, Bot } from "lucide-react";
 import confetti from "canvas-confetti";
 import {
   getFreeExportsLeft,
@@ -183,26 +181,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
-      {/* Navigation */}
-      <Navbar
-        onLoadProfile={handleLoadProfile}
-        onResetData={handleResetData}
-        onOpenPricing={() => setIsPricingOpen(true)}
-        freeExportsLeft={freeExportsLeft}
-        isProUser={isProUser}
-        onResetTrial={handleResetTrial}
-        onOpenAiChat={() => setIsAiChatOpen(true)}
-        aiGenerationsLeft={aiGenerationsLeft}
-        onOpenAtsChecker={() => setIsAtsCheckerOpen(true)}
-        onOpenProfileMatcher={() => setIsProfileMatcherOpen(true)}
-        atsScore={atsScore}
-        activeView={activeView}
-        setActiveView={setActiveView}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-        onOpenLoginModal={() => setIsLoginModalOpen(true)}
-      />
-
       {/* Hero conversion banner - only displayed in form view */}
       {activeView === "form" && (
         <div className="no-print">
@@ -220,9 +198,9 @@ export default function App() {
 
       {/* Main Studio Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-        {/* Step Indicator Pill Bar */}
-        <div className="no-print mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-3 sm:p-4 rounded-2xl border border-neutral-200 shadow-xs">
-          <div className="flex items-center gap-2">
+        {/* Step Indicator & Top Control Bar */}
+        <div className="no-print mb-6 flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-3 sm:p-4 rounded-2xl border border-neutral-200 shadow-xs">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="w-2.5 h-2.5 rounded-full bg-[#ff5421] animate-ping" />
             <span className="text-xs font-black uppercase tracking-wider text-slate-800">
               {activeView === "form" ? "Step 1: Enter Your Details" : "Step 2: 100% Black & White ATS Resume"}
@@ -230,9 +208,32 @@ export default function App() {
             <span className="text-[11px] bg-orange-100 text-[#ff5421] font-bold px-2 py-0.5 rounded-full">
               {activeView === "form" ? "Details Mode" : "Preview & Download"}
             </span>
+
+            {/* Quick Student Login status */}
+            {currentUser ? (
+              <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold px-2.5 py-1 rounded-full">
+                <span>✓ {currentUser.name || currentUser.email}</span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="text-emerald-700 hover:text-rose-600 font-black ml-1 cursor-pointer"
+                  title="Logout"
+                >
+                  (Logout)
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsLoginModalOpen(true)}
+                className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-orange-50 hover:bg-orange-100 text-[#ff5421] border border-orange-200 transition cursor-pointer"
+              >
+                Student Login →
+              </button>
+            )}
           </div>
 
-          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full md:w-auto flex-wrap">
             {activeView === "preview" && (
               <button
                 type="button"
@@ -282,11 +283,26 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsProfileMatcherOpen(true)}
-              className="col-span-2 sm:col-span-1 min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-black text-[#ff5421] bg-orange-50 hover:bg-orange-100 border border-orange-300 transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-black text-[#ff5421] bg-orange-50 hover:bg-orange-100 border border-orange-300 transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
               title="Compare your Resume against any Job Description"
             >
               <Target className="w-4 h-4 text-[#ff5421]" />
               <span>🎯 Job Matcher %</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                if (!currentUser) {
+                  setIsLoginModalOpen(true);
+                } else {
+                  setIsAiChatOpen(true);
+                }
+              }}
+              className="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-[#ff5421] hover:bg-[#e04515] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+            >
+              <Bot className="w-4 h-4 text-white" />
+              <span>🤖 AI Copilot</span>
             </button>
           </div>
         </div>
@@ -445,9 +461,6 @@ export default function App() {
 
       {/* Dynamic Toast feedback */}
       <Toast toast={toast} onClose={() => setToast(null)} />
-
-      {/* Footer */}
-      <Footer onOpenPricing={() => setIsPricingOpen(true)} />
     </div>
   );
 }
