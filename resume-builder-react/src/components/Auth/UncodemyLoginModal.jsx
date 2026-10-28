@@ -78,7 +78,7 @@ export default function UncodemyLoginModal({
       } else {
         setIsNotInDb(true);
         setErrorMsg(
-          "This email is not registered as an Uncodemy student! AI Resume Copilot is 100% Free only for Uncodemy students. External users can unlock access with a Student Pro Pass (₹29)."
+          "This email is not found in our database. Please check for spelling mistakes or contact placement support."
         );
       }
     } catch (err) {
@@ -137,19 +137,13 @@ export default function UncodemyLoginModal({
           <div className="p-3.5 bg-orange-50 border border-orange-200 rounded-2xl text-xs space-y-2">
             <div className="font-bold text-orange-950 flex items-center gap-1.5">
               <GraduationCap className="w-4 h-4 text-[#ff5421]" />
-              <span>Access Rules:</span>
+              <span>Student Verification:</span>
             </div>
             <div className="space-y-1 text-slate-700 text-[11px]">
               <div className="flex items-start gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Uncodemy Students:</strong> Resume Builder + AI Chatbot are <strong>100% Free & Unlimited</strong>.
-                </span>
-              </div>
-              <div className="flex items-start gap-1.5">
-                <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-                <span>
-                  <strong>External Users:</strong> Resume Builder is free, but AI Chatbot is <strong>Paid</strong> (Student Pro Pass ₹29).
+                  Resume Builder, Profile Matcher, and AI Assistant are <strong>100% Free & Unlimited</strong> for everyone!
                 </span>
               </div>
             </div>
@@ -164,19 +158,6 @@ export default function UncodemyLoginModal({
               <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
               <div className="space-y-2 leading-relaxed">
                 <div className="font-semibold">{errorMsg}</div>
-                {isNotInDb && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (onClose) onClose();
-                      if (onOpenPricing) onOpenPricing();
-                    }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#ff5421] text-white rounded-xl font-bold text-xs hover:bg-[#e04515] transition cursor-pointer shadow-sm"
-                  >
-                    <CreditCard className="w-3.5 h-3.5" />
-                    <span>Get Pro Pass (₹29)</span>
-                  </button>
-                )}
               </div>
             </div>
           )}
@@ -245,19 +226,9 @@ export default function UncodemyLoginModal({
             </button>
           </form>
 
-          {/* Non-student Pro Alternative */}
-          <div className="pt-2 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
-            <span>Not an Uncodemy student?</span>
-            <button
-              type="button"
-              onClick={() => {
-                if (onClose) onClose();
-                if (onOpenPricing) onOpenPricing();
-              }}
-              className="text-[#ff5421] font-bold hover:underline cursor-pointer"
-            >
-              Unlock AI Copilot for ₹29 →
-            </button>
+          {/* Free Access Notice */}
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-center text-[11px] text-slate-500 font-medium">
+            <span>✨ All tools including PDF downloads & AI are 100% Free Forever!</span>
           </div>
         </div>
       </div>

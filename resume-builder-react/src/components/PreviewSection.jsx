@@ -47,21 +47,20 @@ export default function PreviewSection({
   const resumeContainerRef = useRef(null);
 
   const handleDownload = () => {
-    if (!isProUser && freeExportsLeft <= 0) {
-      onTriggerUpgrade();
-      return;
-    }
-
     setIsExporting(true);
 
-    if (!isProUser) {
-      onExportSuccess();
-    }
+    try {
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.6 }
+      });
+    } catch (e) {}
 
     setTimeout(() => {
       window.print();
       setIsExporting(false);
-    }, 150);
+    }, 250);
   };
 
   const renderTemplate = () => {
@@ -324,22 +323,16 @@ export default function PreviewSection({
           </div>
         </div>
 
-        {/* Free Trial Badge Status */}
+        {/* Free Unlimited Badge Status */}
         <div className="flex items-center justify-between text-xs pt-1 text-slate-500">
           <div className="flex items-center gap-2">
-            {isProUser ? (
-              <span className="inline-flex items-center gap-1 text-orange-700 font-bold bg-orange-50 px-3 py-0.5 rounded-full border border-orange-200">
-                <Sparkles className="w-3.5 h-3.5 text-orange-600" /> Pro Member (Unlimited Downloads)
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 text-slate-700 bg-slate-100 px-3 py-0.5 rounded-full border border-slate-200">
-                🎁 Free Trial: <strong className={freeExportsLeft > 0 ? "text-emerald-700" : "text-rose-700"}>{freeExportsLeft}/2</strong> downloads left
-              </span>
-            )}
+            <span className="inline-flex items-center gap-1.5 text-emerald-800 font-extrabold bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" /> 100% Free & Unlimited PDF Downloads
+            </span>
           </div>
 
           <div className="text-[11px] text-slate-500 font-medium">
-            📄 Recruiter Pass Guaranteed: <strong>100% Monochrome ATS</strong>
+            📄 Recruiter Approved: <strong>100% Monochrome ATS</strong>
           </div>
         </div>
       </div>

@@ -57,29 +57,10 @@ export default function AiChatCopilot({
   onOpenPricing,
   onResetTrial
 }) {
-  // Check if current user is an active Uncodemy student verified in MySQL database
-  const isVerifiedStudent = Boolean(
-    currentUser && (
-      currentUser.isUncodemyStudent === true ||
-      currentUser.isPro === true ||
-      currentUser.role === "SUPER_ADMIN" ||
-      currentUser.role === "ADMIN" ||
-      currentUser.role === "STUDENT" ||
-      currentUser.role === "STUDENT_PRO" ||
-      currentUser.email?.toLowerCase() === "shakaysagar166@gmail.com"
-    )
-  );
-
-  // Check if user has an active paid subscription record (Paid Pro)
-  const hasPaidSubscription = Boolean(
-    !isVerifiedStudent && (
-      Boolean(localStorage.getItem("resumecraft_paid_subscription")) ||
-      currentUser?.hasPaidSubscription === true
-    )
-  );
-
-  // Chatbot is 100% FREE for verified Uncodemy students, or PAID for Pro users. Strictly locked for everyone else.
-  const hasAccess = isVerifiedStudent || hasPaidSubscription;
+  // Chatbot is 100% FREE & UNLIMITED for everyone - No paid gates
+  const isVerifiedStudent = true;
+  const hasPaidSubscription = true;
+  const hasAccess = true;
   const [messages, setMessages] = useState([
     {
       id: "m-1",

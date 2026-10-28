@@ -1,7 +1,25 @@
 import React from "react";
-import { Sparkles, GraduationCap, CheckCircle2, Users, ArrowRight, ShieldCheck, Zap, Bot, Star, Target } from "lucide-react";
+import {
+  Sparkles,
+  GraduationCap,
+  CheckCircle2,
+  Users,
+  ArrowRight,
+  ShieldCheck,
+  Zap,
+  Bot,
+  Star,
+  Target,
+  FileText
+} from "lucide-react";
 
-export default function HeroBanner({ onOpenPricing, onLoadFresherProfile, onOpenAiChat, onOpenAtsChecker, onOpenProfileMatcher, currentUser, onOpenLoginModal }) {
+export default function HeroBanner({
+  onSelectBlock,
+  activeStudioBlock,
+  onLoadFresherProfile,
+  currentUser,
+  onOpenLoginModal
+}) {
   return (
     <div className="no-print relative overflow-hidden bg-gradient-to-b from-orange-50/70 via-white to-neutral-50 border-b border-neutral-200 px-4 py-8 sm:py-10">
       {/* Background soft ambient accents in Uncodemy Orange */}
@@ -15,7 +33,7 @@ export default function HeroBanner({ onOpenPricing, onLoadFresherProfile, onOpen
             <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Uncodemy Career & Placement Partner</span>
             <span className="text-neutral-300">•</span>
-            <span className="text-slate-700 font-semibold">100% Black & White ATS Standard</span>
+            <span className="text-slate-700 font-semibold">100% Free & Unlimited Access</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-[1.2] sm:leading-[1.15]">
@@ -27,54 +45,11 @@ export default function HeroBanner({ onOpenPricing, onLoadFresherProfile, onOpen
 
           <p className="mt-3 text-xs sm:text-base text-slate-600 leading-relaxed max-w-xl">
             Designed to match the strict hiring criteria of Top Tech MNCs and startups. Clean monochrome formatting,
-            zero parsing errors, automated AI bullet polisher, and instant direct email delivery.
+            zero parsing errors, automated AI bullet polisher, and instant direct PDF downloads.
           </p>
 
-          {/* Action Row & Value Props */}
+          {/* Value Props Pills */}
           <div className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3">
-            <button
-              type="button"
-              onClick={() => {
-                if (!currentUser) {
-                  onOpenLoginModal();
-                } else {
-                  onOpenAiChat();
-                }
-              }}
-              className="w-full sm:w-auto min-h-[44px] flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-[#ff5421] hover:bg-[#e04515] shadow-lg shadow-orange-500/30 transition cursor-pointer transform active:scale-95"
-            >
-              <Bot className="w-4 h-4 text-white" />
-              <span>
-                {currentUser
-                  ? "🤖 AI Resume Copilot (100% Free)"
-                  : "🤖 AI Resume Copilot (Database Users Only)"}
-              </span>
-            </button>
-
-            {onOpenAtsChecker && (
-              <button
-                type="button"
-                onClick={onOpenAtsChecker}
-                className="w-full sm:w-auto min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 shadow-sm transition cursor-pointer transform active:scale-95"
-              >
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>🎯 Free ATS Score</span>
-                <span className="text-[10px] bg-emerald-600 text-white font-black px-1.5 py-0.5 rounded-full">FREE</span>
-              </button>
-            )}
-
-            {onOpenProfileMatcher && (
-              <button
-                type="button"
-                onClick={onOpenProfileMatcher}
-                className="w-full sm:w-auto min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-[#ff5421] bg-orange-50 hover:bg-orange-100 border border-orange-300 shadow-sm transition cursor-pointer transform active:scale-95"
-              >
-                <Target className="w-4 h-4 text-[#ff5421]" />
-                <span>🎯 Job Profile Matcher</span>
-                <span className="text-[10px] bg-[#ff5421] text-white font-black px-1.5 py-0.5 rounded-full">NEW</span>
-              </button>
-            )}
-
             <span className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-neutral-200 shadow-2xs text-[11px] sm:text-xs font-semibold text-slate-700">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> 98.6% ATS Pass
             </span>
@@ -84,44 +59,101 @@ export default function HeroBanner({ onOpenPricing, onLoadFresherProfile, onOpen
             <span className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-neutral-200 shadow-2xs text-[11px] sm:text-xs font-semibold text-slate-700">
               <Users className="w-3.5 h-3.5 text-[#ff5421]" /> 1,000+ Students Daily
             </span>
+            <span className="flex items-center gap-1.5 bg-emerald-50 text-emerald-800 px-3 py-1.5 rounded-xl border border-emerald-200 shadow-2xs text-[11px] sm:text-xs font-bold">
+              ✓ 100% Free Forever
+            </span>
           </div>
         </div>
 
-        {/* Uncodemy Student Special Promo Card */}
-        <div className="w-full lg:w-auto shrink-0 bg-white border-2 border-orange-300 rounded-2xl p-6 shadow-xl shadow-orange-500/10 max-w-sm relative">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-orange-100 text-[#ff5421] border border-orange-300">
-              🎓 Uncodemy Offer
+        {/* 3 Core Studio Modules Quick Switch Card */}
+        <div className="w-full lg:w-auto shrink-0 bg-white border-2 border-orange-200 rounded-3xl p-6 shadow-xl shadow-orange-500/10 max-w-md relative space-y-4">
+          <div className="flex items-center justify-between gap-2 pb-2 border-b border-neutral-100">
+            <span className="text-[11px] font-black uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-[#ff5421]" />
+              <span>3 Core AI Studio Blocks</span>
             </span>
-            <span className="text-xs text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-              Flat 70% Off
+            <span className="text-[10px] text-emerald-700 font-extrabold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+              Free Access
             </span>
           </div>
 
-          <h3 className="text-base font-extrabold text-slate-900 mt-3 flex items-center gap-2">
-            <GraduationCap className="w-5 h-5 text-[#ff5421]" />
-            Uncodemy Student Special Deal
-          </h3>
-
-          <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-            Get unlimited resume PDF downloads, direct email delivery, and AI auto-generation for just <strong>₹29</strong> with coupon <code className="bg-orange-50 text-[#ff5421] font-mono font-black px-1.5 py-0.5 rounded border border-orange-200">UNCODEMY</code>.
-          </p>
-
-          <div className="mt-5 flex items-center gap-2.5">
+          <div className="space-y-2.5">
+            {/* Block 1 Card */}
             <button
               type="button"
-              onClick={onOpenPricing}
-              className="flex-1 min-h-[44px] flex items-center justify-center py-2.5 px-3.5 rounded-xl text-xs font-black text-white bg-[#ff5421] hover:bg-[#e04515] transition cursor-pointer text-center shadow-md shadow-orange-500/25 active:scale-95"
+              onClick={() => onSelectBlock && onSelectBlock("maker")}
+              className={`w-full text-left p-3 rounded-2xl border transition cursor-pointer flex items-center justify-between group active:scale-98 ${
+                activeStudioBlock === "maker"
+                  ? "bg-orange-50/80 border-[#ff5421] shadow-xs"
+                  : "bg-slate-50 border-slate-200 hover:border-orange-300 hover:bg-orange-50/30"
+              }`}
             >
-              Claim ₹29 Deal
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-[#ff5421]">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-black text-xs text-slate-900 group-hover:text-[#ff5421]">
+                    1. Resume Maker Studio
+                  </h4>
+                  <p className="text-[11px] text-slate-500">
+                    Form editor & 100% B&W ATS templates
+                  </p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff5421] transition" />
             </button>
+
+            {/* Block 2 Card */}
             <button
               type="button"
-              onClick={onLoadFresherProfile}
-              className="min-h-[44px] flex items-center justify-center py-2.5 px-3.5 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition cursor-pointer border border-slate-200 active:scale-95"
-              title="Load Fresher Placement Sample"
+              onClick={() => onSelectBlock && onSelectBlock("matcher")}
+              className={`w-full text-left p-3 rounded-2xl border transition cursor-pointer flex items-center justify-between group active:scale-98 ${
+                activeStudioBlock === "matcher"
+                  ? "bg-blue-50/80 border-blue-500 shadow-xs"
+                  : "bg-slate-50 border-slate-200 hover:border-blue-300 hover:bg-blue-50/30"
+              }`}
             >
-              🎓 Try Demo
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                  <Target className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-black text-xs text-slate-900 group-hover:text-blue-600">
+                    2. Job Profile Matcher
+                  </h4>
+                  <p className="text-[11px] text-slate-500">
+                    Compare resume vs JD & see match %
+                  </p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition" />
+            </button>
+
+            {/* Block 3 Card */}
+            <button
+              type="button"
+              onClick={() => onSelectBlock && onSelectBlock("chat")}
+              className={`w-full text-left p-3 rounded-2xl border transition cursor-pointer flex items-center justify-between group active:scale-98 ${
+                activeStudioBlock === "chat"
+                  ? "bg-purple-50/80 border-purple-500 shadow-xs"
+                  : "bg-slate-50 border-slate-200 hover:border-purple-300 hover:bg-purple-50/30"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+                  <Bot className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-black text-xs text-slate-900 group-hover:text-purple-600">
+                    3. AI Resume Chatbot
+                  </h4>
+                  <p className="text-[11px] text-slate-500">
+                    Generate resumes & polish bullet points
+                  </p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-600 transition" />
             </button>
           </div>
         </div>

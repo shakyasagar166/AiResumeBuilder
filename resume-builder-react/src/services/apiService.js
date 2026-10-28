@@ -20,95 +20,30 @@ export function getUserIdentifier() {
   return uid;
 }
 
-// Initialize free tier: default 2 free exports
+// 100% Free & Unlimited Access for all students & users - No payment system
 export function getFreeExportsLeft() {
-  const stored = localStorage.getItem(STORAGE_KEYS.FREE_EXPORTS_LEFT);
-  if (stored === null) {
-    localStorage.setItem(STORAGE_KEYS.FREE_EXPORTS_LEFT, "2");
-    return 2;
-  }
-  return parseInt(stored, 10);
+  return 999999;
 }
 
 export function decrementFreeExport() {
-  const current = getFreeExportsLeft();
-  const next = Math.max(0, current - 1);
-  localStorage.setItem(STORAGE_KEYS.FREE_EXPORTS_LEFT, next.toString());
-
-  // Also notify Spring Boot backend asynchronously
-  if (USE_REAL_BACKEND) {
-    fetch(`${BACKEND_BASE_URL}/usage/decrement?userIdentifier=${getUserIdentifier()}`, {
-      method: "POST"
-    }).catch(err => console.log("Backend sync offline fallback", err));
-  }
-
-  return next;
+  return 999999;
 }
 
-// AI Copilot 1-time free trial tracking
+// AI Copilot 100% Free & Unlimited
 export function getAiGenerationsLeft() {
-  const stored = localStorage.getItem(STORAGE_KEYS.AI_TRIAL_LEFT);
-  if (stored === null) {
-    localStorage.setItem(STORAGE_KEYS.AI_TRIAL_LEFT, "1");
-    return 1;
-  }
-  return parseInt(stored, 10);
+  return 999999;
 }
 
 export function decrementAiGeneration() {
-  const current = getAiGenerationsLeft();
-  const next = Math.max(0, current - 1);
-  localStorage.setItem(STORAGE_KEYS.AI_TRIAL_LEFT, next.toString());
-  return next;
+  return 999999;
 }
 
 export function getIsProUser() {
-  try {
-    // 1. Check if user is logged in as an Uncodemy MongoDB student/admin (100% Free)
-    const rawUser = localStorage.getItem("uncodemy_auth_user");
-    if (rawUser) {
-      const user = JSON.parse(rawUser);
-      if (
-        user &&
-        (user.isUncodemyStudent === true ||
-          user.isPro === true ||
-          user.role === "SUPER_ADMIN" ||
-          user.role === "ADMIN" ||
-          user.role === "STUDENT" ||
-          user.role === "STUDENT_PRO" ||
-          user.email?.toLowerCase() === "shakaysagar166@gmail.com")
-      ) {
-        return true;
-      }
-    }
-
-    // 2. Check if user has an active paid subscription record (Paid Pro)
-    const paidSub = localStorage.getItem("resumecraft_paid_subscription");
-    if (paidSub) {
-      const parsed = JSON.parse(paidSub);
-      if (parsed && (parsed.orderId || parsed.paymentId)) {
-        return true;
-      }
-    }
-  } catch (e) {
-    console.warn("getIsProUser error", e);
-  }
-
-  // If not logged in with database email and not paid, ensure false in storage
-  try {
-    localStorage.setItem(STORAGE_KEYS.IS_PRO_USER, "false");
-  } catch (e) {}
-
-  return false;
+  return true; // 100% Free for everyone - No paid gates
 }
 
 export function setIsProUser(status) {
-  if (status) {
-    localStorage.setItem(STORAGE_KEYS.IS_PRO_USER, "true");
-  } else {
-    localStorage.setItem(STORAGE_KEYS.IS_PRO_USER, "false");
-    localStorage.removeItem("resumecraft_paid_subscription");
-  }
+  localStorage.setItem(STORAGE_KEYS.IS_PRO_USER, "true");
 }
 
 export function resetFreeTrialForDemo() {
